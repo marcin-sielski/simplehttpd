@@ -1,7 +1,7 @@
 # simplehttpd
 Simple HTTP Server that can be installed as a Windows Service
 
-Build:
+Build procedure:
 
     autoreconf -if
     ./configure
