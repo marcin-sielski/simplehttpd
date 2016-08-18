@@ -99,7 +99,7 @@ static int http_handler (void *cls, struct MHD_Connection *connection,
 		return MHD_YES;
 	}
 	*ptr = NULL;                  /* reset when done */
-	filename = g_strdup_printf("%s%s", cls, url);
+	gchar *filename = g_strdup_printf("%s%s", cls, url);
 	file = fopen (filename, "rb");
 	g_free(filename);
 	if (NULL != file) {
