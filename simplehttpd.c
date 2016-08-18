@@ -99,8 +99,9 @@ static int http_handler (void *cls, struct MHD_Connection *connection,
 		return MHD_YES;
 	}
 	*ptr = NULL;                  /* reset when done */
-
-	file = fopen (&url[1], "rb");
+	filename = g_strdup_printf("%s%s", cls, url);
+	file = fopen (filename, "rb");
+	g_free(filename);
 	if (NULL != file) {
 		fd = fileno (file);
 		if (-1 == fd) {
@@ -116,7 +117,7 @@ static int http_handler (void *cls, struct MHD_Connection *connection,
 	}
 
 	if (NULL == file) {
-		dir = opendir (".");
+		dir = opendir (cls);
 		if (NULL == dir) {
 			/* most likely cause: more concurrent requests than
 			available file descriptors / 2 */
