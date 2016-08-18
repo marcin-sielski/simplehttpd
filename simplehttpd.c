@@ -172,7 +172,7 @@ int server_main(int argc, char *argv[]) {
 		exit (1);
 	}
 	if (directory == NULL) while(1);
-	if (directory[0] == '\0') while(1);
+	if (directory[0] == '.') while(1);
 #ifdef _WIN32
 	if (!SetCurrentDirectory(directory))
 #else
