@@ -99,9 +99,7 @@ static int http_handler (void *cls, struct MHD_Connection *connection,
 		return MHD_YES;
 	}
 	*ptr = NULL;                  /* reset when done */
-	gchar *filename = g_strdup_printf("%s%s", cls, url);
-	file = fopen (filename, "rb");
-	g_free(filename);
+	file = fopen (&url[1], "rb");
 	if (NULL != file) {
 		fd = fileno (file);
 		if (-1 == fd) {
@@ -117,7 +115,7 @@ static int http_handler (void *cls, struct MHD_Connection *connection,
 	}
 
 	if (NULL == file) {
-		dir = opendir (cls);
+		dir = opendir (".");
 		if (NULL == dir) {
 			/* most likely cause: more concurrent requests than
 			available file descriptors / 2 */
@@ -173,8 +171,12 @@ int server_main(int argc, char *argv[]) {
 		g_print ("Option parsing failed: %s\n", error->message);
 		exit (1);
 	}
-
-	if (g_chdir(directory)) {
+#ifdef _WIN32
+	if (!SetCurrentDirectory(directory))
+#else
+	if (g_chdir(directory))
+#endif
+	{
 		g_print("Failed to change working directory.\n");
 		exit(1);
 	}
