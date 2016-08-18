@@ -91,6 +91,7 @@ static int http_handler (void *cls, struct MHD_Connection *connection,
 	struct stat buf;
 	char emsg[1024];
 
+	g_chdir(cls);
 	if (0 != strcmp (method, MHD_HTTP_METHOD_GET))
 		return MHD_NO;              /* unexpected method */
 	if (&aptr != *ptr) {
