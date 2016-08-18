@@ -181,7 +181,7 @@ int server_main(int argc, char *argv[]) {
 	}
 #endif
 
-	g_chdir(directory)
+	g_chdir(directory);
 
 	signal(SIGINT, server_handle_signal);
 	signal(SIGTERM, server_handle_signal);
