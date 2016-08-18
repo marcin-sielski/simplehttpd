@@ -32,7 +32,7 @@
 #define SERVER_NAME "Simple HTTP Server" 
 
 static gint port = 8000;
-static gchar *directory = ".";
+static gchar *directory = "../share/janus/demos";
 
 static GOptionEntry entries[] =
 {
@@ -171,17 +171,17 @@ int server_main(int argc, char *argv[]) {
 		g_print ("Option parsing failed: %s\n", error->message);
 		exit (1);
 	}
-	if (directory == NULL) while(1);
-	if (directory[0] == '.') while(1);
+
 #ifdef _WIN32
-	if (!SetCurrentDirectory(directory))
-#else
-	if (g_chdir(directory))
-#endif
-	{
+	gchar buf[MAX_PATH];
+	GetModuleFileName(NULL, buf, MAX_PATH);
+	if (g_chdir(g_path_get_dirname(buf))) {
 		g_print("Failed to change working directory.\n");
 		exit(1);
 	}
+#endif
+
+	g_chdir(directory)
 
 	signal(SIGINT, server_handle_signal);
 	signal(SIGTERM, server_handle_signal);
